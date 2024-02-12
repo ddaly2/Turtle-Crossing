@@ -3,26 +3,34 @@ from turtle import Turtle
 import random
 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]
-STARTING_MOVE_DISTANCE = 5
-MOVE_INCREMENT = 10
+STARTING_SPEED = 5
 
 
-class CarManager(Turtle):
+class CarManager:
 
-    def __init__(self, is_game_on):
-        super().__init__()
-        #This is breaking the runtime....FIX BEFORE MOVING ON
-        while is_game_on:
-            time.sleep(.5)
-            self.shape("square")
-            self.penup()
-            self.turtlesize(stretch_wid=1, stretch_len=2.5)
-            self.goto(300, random.randint(-300, 300))
-            self.color(random.choice(COLORS))
-            self.setheading(180)
-            self.move()
+    def __init__(self):
+        self.cars = []
+        self.car_speed = STARTING_SPEED
 
-    def move(self):
-        self.forward(STARTING_MOVE_DISTANCE)
+    def create_car(self):
+        chance = random.randint(1, 8)
+        if chance == 1:
+            new_car = Turtle("square")
+            new_car.shapesize(stretch_wid=1, stretch_len=2)
+            new_car.penup()
+            new_car.color(random.choice(COLORS))
+            random_y = random.randint(-230, 250)
+            new_car.goto(300, random_y)
+            self.cars.append(new_car)
+
+    def move_cars(self):
+        for car in self.cars:
+            car.setheading(180)
+            car.forward(self.car_speed)
+            if car.xcor() < -310:
+                car.hideturtle()
+                self.cars.remove(car)
+
+
 
 
